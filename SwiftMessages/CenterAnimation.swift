@@ -53,8 +53,9 @@ public class CenterAnimation: NSObject, Animator {
         container.addSubview(view)
         let centerX = NSLayoutConstraint(item: view, attribute: .centerX, relatedBy: .equal, toItem: container, attribute: .centerX, multiplier: 1.00, constant: 0.0)
         let centerY = NSLayoutConstraint(item: view, attribute: .centerY, relatedBy: .equal, toItem: container, attribute: .centerY, multiplier: 1.00, constant: 0.0)
-        let leftMargin = NSLayoutConstraint(item: view, attribute: .left, relatedBy: .equal, toItem: container, attribute: .left, multiplier: 1.00, constant: 00.0)
-        container.addConstraints([centerX, centerY, leftMargin])
+//        let leftMargin = NSLayoutConstraint(item: view, attribute: .left, relatedBy: .equal, toItem: container, attribute: .left, multiplier: 1.00, constant: 00.0)
+//        container.addConstraints([centerX, centerY, leftMargin])
+        container.addConstraints([centerX, centerY])
         container.layoutIfNeeded()
         installInteractive(context: context)
     }
