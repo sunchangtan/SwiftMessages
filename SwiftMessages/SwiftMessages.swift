@@ -577,13 +577,14 @@ extension SwiftMessages {
      - Returns: The view with matching id if currently queued to be shown.
      */
     public func queued<T: UIView>(id: String) -> T? {
-        var view: T?
-        messageQueue.sync {
-            if let queued = queue.first(where: { $0.id == id }) {
-                view = queued as? T
-            }
-        }
-        return view
+//        var view: T?
+//        messageQueue.sync {
+//            if let queued = queue.first(where: { $0.id == id }) {
+//                view = queued as? T
+//            }
+//        }
+//        return view
+        return nil
     }
 
     /**
