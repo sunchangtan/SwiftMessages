@@ -33,7 +33,7 @@ public class AnimationContext {
 
 public protocol Animator: class {
 
-    weak var delegate: AnimationDelegate? { get set }
+    var delegate: AnimationDelegate? { get set }
 
     func show(context: AnimationContext, completion: @escaping AnimationCompletion)
 
