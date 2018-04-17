@@ -13,7 +13,7 @@ private let globalInstance = SwiftMessages()
 /**
  The `SwiftMessages` class provides the interface for showing and hiding messages.
  It behaves like a queue, only showing one message at a time. Message views that
- implement the `Identifiable` protocol (as `MessageView` does) will have duplicates removed.
+ adopt the `Identifiable` protocol (as `MessageView` does) will have duplicates removed.
  */
 open class SwiftMessages {
     
@@ -309,6 +309,13 @@ open class SwiftMessages {
          label, e.g. "dismiss" when the `interactive` option is used.
         */
         public var dimModeAccessibilityLabel: String = "dismiss"
+
+        /**
+         If specified, SwiftMessages calls this closure when an instance of
+         `WindowViewController` is needed. Use this if you need to supply a custom subclass
+         of `WindowViewController`.
+         */
+        public var windowViewController: ((_ windowLevel: UIWindowLevel?, _ config: SwiftMessages.Config) -> WindowViewController)?
     }
     
     /**
@@ -392,6 +399,7 @@ open class SwiftMessages {
         messageQueue.sync {
             queue.removeAll()
             delays.ids.removeAll()
+            counts.removeAll()
             hideCurrent()
         }
     }
@@ -399,19 +407,59 @@ open class SwiftMessages {
     /**
      Hide a message with the given `id`. If the specified message is
      currently being displayed, it will be animated away. Works with message
-     views, such as `MessageView`, that implement the `Identifiable` protocol.
+     views, such as `MessageView`, that adopt the `Identifiable` protocol.
      - Parameter id: The identifier of the message to remove.
      */
     open func hide(id: String) {
         messageQueue.sync {
-            if id == current?.id {
+            if id == _current?.id {
+                hideCurrent()
+            }
+            queue = queue.filter { $0.id != id }
+            delays.ids.remove(id)
+            counts[id] = nil
+        }
+    }
+
+    /**
+     Hide the message when the number of calls to show() and hideCounted(id:) for a
+     given message ID are equal. This can be useful for messages that may be
+     shown from  multiple code paths to ensure that all paths are ready to hide.
+     */
+    open func hideCounted(id: String) {
+        messageQueue.sync {
+            if let count = counts[id] {
+                if count < 2 {
+                    counts[id] = nil
+                } else {
+                    counts[id] = count - 1
+                    return
+                }
+            }
+            if id == _current?.id {
                 hideCurrent()
             }
             queue = queue.filter { $0.id != id }
             delays.ids.remove(id)
         }
     }
-    
+
+    /**
+     Get the count of a message with the given ID (see `hideCounted(id:)`)
+     */
+    public func count(id: String) -> Int {
+        return counts[id] ?? 0
+    }
+
+    /**
+     Explicitly set the count of a message with the given ID (see `hideCounted(id:)`).
+     Not sure if there's a use case for this, but why not?!
+     */
+    public func set(count: Int, for id: String) {
+        guard counts[id] != nil else { return }
+        return counts[id] = count
+    }
+
     /**
      Specifies the default configuration to use when calling the variants of
      `show()` that don't take a `config` argument or as a base for custom configs.
@@ -444,7 +492,8 @@ open class SwiftMessages {
     fileprivate let messageQueue = DispatchQueue(label: "it.swiftkick.SwiftMessages", attributes: [])
     fileprivate var queue: [Presenter] = []
     fileprivate var delays = Delays()
-    fileprivate var current: Presenter? = nil {
+    fileprivate var counts: [String : Int] = [:]
+    fileprivate var _current: Presenter? = nil {
         didSet {
             if oldValue != nil {
                 let delayTime = DispatchTime.now() + pauseBetweenMessages
@@ -457,7 +506,8 @@ open class SwiftMessages {
 
     fileprivate func enqueue(presenter: Presenter) {
         if presenter.config.ignoreDuplicates {
-            if current?.id == presenter.id && current?.isHiding == false { return }
+            counts[presenter.id] = (counts[presenter.id] ?? 0) + 1
+            if _current?.id == presenter.id && _current?.isHiding == false { return }
             if queue.filter({ $0.id == presenter.id }).count > 0 { return }
         }
         func doEnqueue() {
@@ -477,9 +527,9 @@ open class SwiftMessages {
     }
     
     fileprivate func dequeueNext() {
-        guard self.current == nil, queue.count > 0 else { return }
+        guard self._current == nil, queue.count > 0 else { return }
         let current = queue.removeFirst()
-        self.current = current
+        self._current = current
         // Set `autohideToken` before the animation starts in case
         // the dismiss gesture begins before we've queued the autohide
         // block on animation completion.
@@ -502,14 +552,14 @@ open class SwiftMessages {
                 }
             } catch {
                 strongSelf.messageQueue.sync {
-                    strongSelf.current = nil
+                    strongSelf._current = nil
                 }
             }
         }
     }
 
     fileprivate func internalHide(id: String) {
-        if id == current?.id {
+        if id == _current?.id {
             hideCurrent()
         }
         queue = queue.filter { $0.id != id }
@@ -517,15 +567,16 @@ open class SwiftMessages {
     }
 
     fileprivate func hideCurrent() {
-        guard let current = current, !current.isHiding else { return }
+        guard let current = _current, !current.isHiding else { return }
         let delay = current.delayHide ?? 0
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self, weak current] in
             guard let strongCurrent = current else { return }
             strongCurrent.hide { (completed) in
                 guard completed, let strongSelf = self, let strongCurrent = current else { return }
                 strongSelf.messageQueue.sync {
-                    guard strongSelf.current === strongCurrent else { return }
-                    strongSelf.current = nil
+                    guard strongSelf._current === strongCurrent else { return }
+                    strongSelf.counts[strongCurrent.id] = nil
+                    strongSelf._current = nil
                 }
             }
         }
@@ -534,7 +585,7 @@ open class SwiftMessages {
     fileprivate weak var autohideToken: AnyObject?
     
     fileprivate func queueAutoHide() {
-        guard let current = current else { return }
+        guard let current = _current else { return }
         autohideToken = current
         if let pauseDuration = current.pauseDuration {
             let delayTime = DispatchTime.now() + pauseDuration
@@ -549,21 +600,34 @@ open class SwiftMessages {
 }
 
 /*
- MARK: - Getting the status of messages
+ MARK: - Accessing messages
  */
 
 extension SwiftMessages {
 
     /**
+     Returns the message view of type `T` if it is currently being shown or hidden.
+
+     - Returns: The view of type `T` if it is currently being shown or hidden.
+     */
+    public func current<T: UIView>() -> T? {
+        var view: T?
+        messageQueue.sync {
+            view = _current?.view as? T
+        }
+        return view
+    }
+
+    /**
      Returns a message view with the given `id` if it is currently being shown or hidden.
 
-     - Parameter id: The id of a message that implements `Identifiable`.
+     - Parameter id: The id of a message that adopts `Identifiable`.
      - Returns: The view with matching id if currently being shown or hidden.
     */
     public func current<T: UIView>(id: String) -> T? {
         var view: T?
         messageQueue.sync {
-            if let current = current, current.id == id {
+            if let current = _current, current.id == id {
                 view = current.view as? T
             }
         }
@@ -573,25 +637,24 @@ extension SwiftMessages {
     /**
      Returns a message view with the given `id` if it is currently in the queue to be shown.
 
-     - Parameter id: The id of a message that implements `Identifiable`.
+     - Parameter id: The id of a message that adopts `Identifiable`.
      - Returns: The view with matching id if currently queued to be shown.
      */
     public func queued<T: UIView>(id: String) -> T? {
-//        var view: T?
-//        messageQueue.sync {
-//            if let queued = queue.first(where: { $0.id == id }) {
-//                view = queued as? T
-//            }
-//        }
-//        return view
-        return nil
+        var view: T?
+        messageQueue.sync {
+            if let queued = queue.first(where: { $0.id == id }) {
+                view = queued.view as? T
+            }
+        }
+        return view
     }
 
     /**
      Returns a message view with the given `id` if it is currently being 
      shown, hidden or in the queue to be shown.
 
-     - Parameter id: The id of a message that implements `Identifiable`.
+     - Parameter id: The id of a message that adopts `Identifiable`.
      - Returns: The view with matching id if currently queued to be shown.
      */
     public func currentOrQueued<T: UIView>(id: String) -> T? {
@@ -627,7 +690,7 @@ extension SwiftMessages: PresenterDelegate {
     }
 
     private func presenter(forAnimator animator: Animator) -> Presenter? {
-        if let current = current, animator === current.animator {
+        if let current = _current, animator === current.animator {
             return current
         }
         let queued = queue.filter { $0.animator === animator }
@@ -713,7 +776,11 @@ extension SwiftMessages {
             }
         }
         let arrayOfViews = resolvedBundle.loadNibNamed(name, owner: filesOwner, options: nil) ?? []
+        #if swift(>=4.1)
         guard let view = arrayOfViews.compactMap( { $0 as? T} ).first else { throw SwiftMessagesError.cannotLoadViewFromNib(nibName: name) }
+        #else
+        guard let view = arrayOfViews.flatMap( { $0 as? T} ).first else { throw SwiftMessagesError.cannotLoadViewFromNib(nibName: name) }
+        #endif
         return view
     }
 }
@@ -764,7 +831,11 @@ extension SwiftMessages {
     public static func hide(id: String) {
         globalInstance.hide(id: id)
     }
-    
+
+    public static func hideCounted(id: String) {
+        globalInstance.hideCounted(id: id)
+    }
+
     public static var defaultConfig: Config {
         get {
             return globalInstance.defaultConfig
@@ -781,5 +852,25 @@ extension SwiftMessages {
         set {
             globalInstance.pauseBetweenMessages = newValue
         }
+    }
+
+    public static func current<T: UIView>(id: String) -> T? {
+        return globalInstance.current(id: id)
+    }
+
+    public static func queued<T: UIView>(id: String) -> T? {
+        return globalInstance.queued(id: id)
+    }
+
+    public static func currentOrQueued<T: UIView>(id: String) -> T? {
+        return globalInstance.currentOrQueued(id: id)
+    }
+
+    public static func count(id: String) -> Int {
+        return globalInstance.count(id: id)
+    }
+
+    public static func set(count: Int, for id: String) {
+        globalInstance.set(count: count, for: id)
     }
 }
