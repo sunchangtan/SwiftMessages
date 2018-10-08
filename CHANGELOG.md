@@ -1,6 +1,60 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 6.0.0
+
+### Changes
+
+* Migrate to Swift 4.2
+
+### Fixes
+
+* Fix #228 restore shared SwiftMessages scheme
+
+## 5.0.1
+
+### Fixes
+
+* Remove debug code that broke the view controller's section of the Demo app.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Removed support for iOS 8.
+
+### Features
+* Add support for modal view controller presentation using [`SwiftMessagesSegue`](./SwiftMessages/SwiftMessagesSegue.swift) custom segue subclass. Try it out in the "View Controllers" section of the Demo app. In addition to the class documentation, more can be found in the [View Controllers](./ViewControllers.md) readme.
+* Update nib files to be more visually consistent with iPhone X:
+  * Introduce [`CornerRoundingView`](./SwiftMessages/CornerRoundingView.swift), which provides configurable corner rounding using squircles (the smoother method of rounding corners that you see on app icons). Nib files that feature rounded corners have their `backgroundView` assigned to a `CornerRoundingView`. `CornerRoundingView` provides a `roundsLeadingCorners` option to dynamically round only the leading corners of the view when presented from top or bottom (a feature used for the tab-style layouts).
+  * Increased the default corner radius to 20. Corner radius can be changed by either modifying the nib file or 
+* Reworked the [`MarginAdjustable`](./SwiftMessages/MarginAdjustable.swift) to improve configurability of layout margins.
+* Add rubber-banding to the interactive dismissal gesture. Rubber banding is automatically applied for views where `backgroundView` is inset from the message view's edges.
+* Added `showDuration` and `hideDuration` properties to the `Animator` protocol (with default implementation that returns `nil`). These values enable animations to work for view controller presentation.
+
+### Fixes
+
+* #202 bodyLabel should set textAlignment to .natural
+* #200 Automatic Presentation Context Broken
+* Fix default value of `TopBottomAnimation.closePercentThreshold`
+
+## 4.1.4
+
+### Bug Fixes
+* Fix #191 Prevent usage of UIApplication.shared when building for extensions
+
+### Improvements
+* #192 Add a way to test compilation with app extension
+
+## 4.1.3
+
+### Features
+* #183 Added iOS app extension support at compile time.
+
+### Bug Fixes
+* Fix #185 Incorrect margin adjustments in landscape
+* Fix #188 Physics animation visual glitch
+
 ## 4.1.2
 
 ### Features

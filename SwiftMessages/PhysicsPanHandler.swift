@@ -114,7 +114,7 @@ open class PhysicsPanHandler {
             let attachmentBehavior = UIAttachmentBehavior(item: messageView, offsetFromCenter: offset, attachedToAnchor: anchorPoint)
             state.attachmentBehavior = attachmentBehavior
             state.itemBehavior.action = { [weak self, weak messageView, weak containerView] in
-                guard let strongSelf = self, let messageView = messageView, let containerView = containerView, let animator = strongSelf.animator else { return }
+                guard let strongSelf = self, !strongSelf.isOffScreen, let messageView = messageView, let containerView = containerView, let animator = strongSelf.animator else { return }
                 let view = (messageView as? BackgroundViewable)?.backgroundView ?? messageView
                 let frame = containerView.convert(view.bounds, from: view)
                 if !containerView.bounds.intersects(frame) {
@@ -139,15 +139,15 @@ open class PhysicsPanHandler {
                 // Limit the speed and angular velocity to reasonable values
                 let speedScale = speed > 0 ? min(1, 1800 / speed) : 1
                 let escapeVelocity = CGPoint(x: velocity.x * speedScale, y: velocity.y * speedScale)
-                let angularSpeedScale = min(1, 10 / fabs(angularVelocity))
+                let angularSpeedScale = min(1, 10 / abs(angularVelocity))
                 let escapeAngularVelocity = angularVelocity * angularSpeedScale
                 state.itemBehavior.addLinearVelocity(escapeVelocity, for: messageView)
                 state.itemBehavior.addAngularVelocity(escapeAngularVelocity, for: messageView)
                 state.attachmentBehavior = nil
             } else {
-                animator.delegate?.panEnded(animator: animator)
                 state.stop()
                 self.state = nil
+                animator.delegate?.panEnded(animator: animator)
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .beginFromCurrentState, animations: {
                     messageView.center = self.restingCenter ?? CGPoint(x: containerView.bounds.width / 2, y: containerView.bounds.height / 2)
                     messageView.transform = CGAffineTransform.identity
