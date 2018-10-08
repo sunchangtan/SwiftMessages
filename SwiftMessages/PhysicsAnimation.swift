@@ -83,12 +83,9 @@ public class PhysicsAnimation: NSObject, Animator {
         // Important to layout now in order to get the right safe area insets
         container.layoutIfNeeded()
         adjustMargins()
-<<<<<<< HEAD
 //        NSLayoutConstraint(item: view, attribute: .leading, relatedBy: .equal, toItem: container, attribute: .leading, multiplier: 1, constant: 0).isActive = true
 //        NSLayoutConstraint(item: view, attribute: .trailing, relatedBy: .equal, toItem: container, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         NSLayoutConstraint(item: view, attribute: .centerX, relatedBy: .equal, toItem: container, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-=======
->>>>>>> 6f5d4509997a8831c93e62db63248e34093fc9cd
         container.layoutIfNeeded()
         installInteractive(context: context)
     }
