@@ -1,6 +1,33 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 6.0.3
+
+### Features
+
+* #276 Add ability to hide message without animation
+* #272 Add duration for `SwiftMessagesSegue`
+* #278 Make pan gesture recognizers public
+
+## 6.0.2
+
+### Features
+
+* #262 Add event listeners to `SwiftMessagesSegue`.
+
+## 6.0.1
+
+### Features
+* #257 The `.centered` presentation style, which is a shortcut for a specific configuration of the `PhysicsAnimation` animator, provides a physics-based dismissal gesture where the view can be flung off screen. When the view goes out of the container view's bounds, the animator calls `SwiftMessages.hide()`, which animates the dim view away and concludes the message view's lifecycle. There is currently a small delay of 0.2s before calling `hide()`.
+
+This change adds the ability to configure the delay by customizing the animator. For example, to set the delay to zero, one would do:
+
+````swift
+let animation = PhysicsAnimation()
+animation.panHandler.hideDelay = 0
+config.presentationStyle = .custom(animator: animation)
+````
+
 ## 6.0.0
 
 ### Changes

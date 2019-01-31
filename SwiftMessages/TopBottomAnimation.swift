@@ -27,6 +27,12 @@ public class TopBottomAnimation: NSObject, Animator {
 
     open var closeAbsoluteThreshold: CGFloat = 75.0;
 
+    public private(set) lazy var panGestureRecognizer: UIPanGestureRecognizer = {
+        let pan = UIPanGestureRecognizer()
+        pan.addTarget(self, action: #selector(pan(_:)))
+        return pan
+    }()
+
     weak var messageView: UIView?
     weak var containerView: UIView?
     var context: AnimationContext?
@@ -102,12 +108,10 @@ public class TopBottomAnimation: NSObject, Animator {
             view.transform = CGAffineTransform(translationX: 0, y: animationDistance)
         }
         if context.interactiveHide {
-            let pan = UIPanGestureRecognizer()
-            pan.addTarget(self, action: #selector(pan(_:)))
             if let view = view as? BackgroundViewable {
-                view.backgroundView.addGestureRecognizer(pan)
+                view.backgroundView.addGestureRecognizer(panGestureRecognizer)
             } else {
-                view.addGestureRecognizer(pan)
+                view.addGestureRecognizer(panGestureRecognizer)
             }
         }
         if let view = view as? BackgroundViewable,

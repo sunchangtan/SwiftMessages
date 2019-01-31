@@ -42,12 +42,13 @@ import UIKit
     utilize some SwiftMessages features. This view can be accessed and configured via the
     `SwiftMessagesSegue.messageView` property. For example, you may configure a default drop
     shadow by calling `segue.messageView.configureDropShadow()`.
- 2. SwiftMessages relies on a view's `intrinsicContentSize` to determine the height of a message.
-    However, some view controllers' views does not define a good `intrinsicContentSize`
-    (`UINavigationController` is a common example). For these cases, there are a couple of ways
-    to specify the preferred height. First, you may set the `preferredContentSize` on the destination
-    view controller (available as "Use Preferred Explicit Size" in IB's attribute inspector). Second,
-    you may set `SwiftMessagesSegue.messageView.backgroundHeight`.
+ 2. SwiftMessages relies on Auto Layout to determine the height the view controller's view.
+    However, some view controllers, such as `UINavigationController` have zero Auto Layout height.
+    There are a few ways to specify the height these view controllers:
+    1. Add an explicit height constraint to the view controller's view.
+    2. Set the view controller's `preferredContentSize` ("Use Preferred Explicit Size" in Interface Builder's
+       attribute inspector). Note that `preferredContentSize.width` is ignored and can be set to zero.
+    3. Set `SwiftMessagesSegue.messageView.backgroundHeight`.
 
  See the "View Controllers" selection in the Demo app for examples.
  */
@@ -109,6 +110,38 @@ open class SwiftMessagesSegue: UIStoryboardSegue {
         case backgroundVertical
     }
 
+    /// The presentation style to use. See the SwiftMessages.PresentationStyle for details.
+    public var presentationStyle: SwiftMessages.PresentationStyle {
+        get { return messenger.defaultConfig.presentationStyle }
+        set { messenger.defaultConfig.presentationStyle = newValue }
+    }
+
+    /// The dim mode to use. See the SwiftMessages.DimMode for details.
+    public var dimMode: SwiftMessages.DimMode {
+        get { return messenger.defaultConfig.dimMode}
+        set { messenger.defaultConfig.dimMode = newValue }
+    }
+    
+    // duration
+    public var duration: SwiftMessages.Duration {
+        get { return messenger.defaultConfig.duration}
+        set { messenger.defaultConfig.duration = newValue }
+    }
+
+    /// Specifies whether or not the interactive pan-to-hide gesture is enabled
+    /// on the message view. The default value is `true`, but may not be appropriate
+    /// for view controllers that use swipe or pan gestures.
+    public var interactiveHide: Bool {
+        get { return messenger.defaultConfig.interactiveHide }
+        set { messenger.defaultConfig.interactiveHide = newValue }
+    }
+
+    /// Specifies an optional array of event listeners.
+    public var eventListeners: [SwiftMessages.EventListener] {
+        get { return messenger.defaultConfig.eventListeners }
+        set { messenger.defaultConfig.eventListeners = newValue }
+    }
+
     /**
      The view that is passed to `SwiftMessages.show(config:view:)` during presentation.
      The view controller's view is installed into `containerView`, which is itself installed
@@ -131,26 +164,6 @@ open class SwiftMessagesSegue: UIStoryboardSegue {
      containing message view. See `Containment` for details.
      */
     public var containment: Containment = .content
-
-    /// The presentation style to use. See the SwiftMessages.PresentationStyle for details.
-    public var presentationStyle: SwiftMessages.PresentationStyle {
-        get { return messenger.defaultConfig.presentationStyle }
-        set { messenger.defaultConfig.presentationStyle = newValue }
-    }
-
-    /// The dim mode to use. See the SwiftMessages.DimMode for details.
-    public var dimMode: SwiftMessages.DimMode {
-        get { return messenger.defaultConfig.dimMode}
-        set { messenger.defaultConfig.dimMode = newValue }
-    }
-
-    /// Specifies whether or not the interactive pan-to-hide gesture is enabled
-    /// on the message view. The default value is `true`, but may not be appropriate
-    /// for view controllers that use swipe or pan gestures.
-    public var interactiveHide: Bool {
-        get { return messenger.defaultConfig.interactiveHide }
-        set { messenger.defaultConfig.interactiveHide = newValue }
-    }
 
     private var messenger = SwiftMessages()
     private var selfRetainer: SwiftMessagesSegue? = nil
@@ -297,15 +310,7 @@ extension SwiftMessagesSegue {
             }
             completeTransition = transitionContext.completeTransition
             let transitionContainer = transitionContext.containerView
-            // Setup the layout of the `toView`
-            do {
-                toView.translatesAutoresizingMaskIntoConstraints = false
-                segue.containerView.addSubview(toView)
-                toView.topAnchor.constraint(equalTo: segue.containerView.topAnchor).isActive = true
-                toView.bottomAnchor.constraint(equalTo: segue.containerView.bottomAnchor).isActive = true
-                toView.leftAnchor.constraint(equalTo: segue.containerView.leftAnchor).isActive = true
-                toView.rightAnchor.constraint(equalTo: segue.containerView.rightAnchor).isActive = true
-            }
+            segue.containerView.addSubview(toView)
             // Install the `toView` into the message view.
             switch segue.containment {
             case .content:
