@@ -13,7 +13,7 @@ public extension MarginAdjustable where Self: UIView {
     public func defaultMarginAdjustment(context: AnimationContext) -> UIEdgeInsets {
         // Best effort to determine if we should use the new or deprecated margin adjustments.
         if layoutMarginAdditions != .zero
-            || (layoutMarginAdditions.top == 0 && layoutMarginAdditions.bottom == 0 && statusBarOffset == 0) {
+            || (layoutMarginAdditions.top == 0 && layoutMarginAdditions.bottom == 0 && collapseLayoutMarginAdditions == false) {
             var layoutMargins: UIEdgeInsets = layoutMarginAdditions
             var safeAreaInsets: UIEdgeInsets
             if #available(iOS 11, *) {
@@ -75,7 +75,7 @@ public extension MarginAdjustable where Self: UIView {
             } else if let app = application, app.statusBarOrientation == .portrait || app.statusBarOrientation == .portraitUpsideDown {
                 let frameInWindow = convert(bounds, to: window)
                 if frameInWindow.minY == -bounceAnimationOffset {
-                    top += statusBarOffset
+                    top += layoutMarginAdditions.bottom
                 }
             }
         } else if #available(iOS 11, *), !context.safeZoneConflicts.isDisjoint(with: .overStatusBar) {
