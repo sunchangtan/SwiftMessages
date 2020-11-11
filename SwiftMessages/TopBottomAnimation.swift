@@ -19,6 +19,10 @@ public class TopBottomAnimation: NSObject, Animator {
 
     public let style: Style
 
+    open var showDuration: TimeInterval = 0.4
+
+    open var hideDuration: TimeInterval = 0.2
+
     open var springDamping: CGFloat = 0.8
 
     open var closeSpeedThreshold: CGFloat = 750.0;
@@ -56,7 +60,7 @@ public class TopBottomAnimation: NSObject, Animator {
         NotificationCenter.default.removeObserver(self)
         let view = context.messageView
         self.context = context
-        UIView.animate(withDuration: hideDuration!, delay: 0, options: [.beginFromCurrentState, .curveEaseIn], animations: {
+        UIView.animate(withDuration: hideDuration, delay: 0, options: [.beginFromCurrentState, .curveEaseIn], animations: {
             switch self.style {
             case .top:
                 view.transform = CGAffineTransform(translationX: 0, y: -view.frame.height)
@@ -73,10 +77,6 @@ public class TopBottomAnimation: NSObject, Animator {
         })
     }
 
-    public var showDuration: TimeInterval? { return 0.4  }
-
-    public var hideDuration: TimeInterval? { return 0.2  }
-
     func install(context: AnimationContext) {
         let view = context.messageView
         let container = context.containerView
@@ -92,9 +92,9 @@ public class TopBottomAnimation: NSObject, Animator {
         view.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
         switch style {
         case .top:
-            view.topAnchor.constraint(equalTo: container.topAnchor, constant: -bounceOffset).isActive = true
+            view.topAnchor.constraint(equalTo: container.topAnchor, constant: -bounceOffset).with(priority: UILayoutPriority(200)).isActive = true
         case .bottom:
-            view.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: bounceOffset).isActive = true
+            view.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: bounceOffset).with(priority: UILayoutPriority(200)).isActive = true
         }
         // Important to layout now in order to get the right safe area insets
         container.layoutIfNeeded()
@@ -152,7 +152,7 @@ public class TopBottomAnimation: NSObject, Animator {
         // Cap the initial velocity at zero because the bounceOffset may not be great
         // enough to allow for greater bounce induced by a quick panning motion.
         let initialSpringVelocity = animationDistance == 0.0 ? 0.0 : min(0.0, closeSpeed / animationDistance)
-        UIView.animate(withDuration: showDuration!, delay: 0.0, usingSpringWithDamping: springDamping, initialSpringVelocity: initialSpringVelocity, options: [.beginFromCurrentState, .curveLinear, .allowUserInteraction], animations: {
+        UIView.animate(withDuration: showDuration, delay: 0.0, usingSpringWithDamping: springDamping, initialSpringVelocity: initialSpringVelocity, options: [.beginFromCurrentState, .curveLinear, .allowUserInteraction], animations: {
             view.transform = .identity
         }, completion: { completed in
             // Fix #131 by always completing if application isn't active.

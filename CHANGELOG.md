@@ -1,9 +1,88 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## 6.0.3
+## 8.0.3
 
 ### Features
+
+* Full support for Swift Package Manager
+
+### Fixes
+
+* #328 ignoreDuplicates is not working
+* #412 Fix deployment target on nib files to match target
+
+## 8.0.2
+
+### Changes
+
+* [#395](https://github.com/SwiftKickMobile/SwiftMessages/pull/395) Add preliminary support for Swift Package Manager.
+
+## 8.0.1
+
+### Fixes
+
+* #401 UIAlertController pops up but SwiftMessage layer absorbs all touches.
+
+## 8.0.0
+
+### Changes
+
+* Add `SwiftMessages.PresentationContext.windowScene` option for targeting a specific window scene.
+* Changed the behavior of the default `presentationContext`, `.automatic`. Previously, if the root view controller was presenting, the message would only be displayed over the presented view controller if the `modalPresentationStyle` was `fullScreen` or `overFullScreen`. Now, messages are always displayed over presented view controllers.
+* Made `showDuraton` and `hideDuration` on `Animator` non-optional.
+* Made `showDuraton` and `hideDuration` writable options on `TopBottomAnimation` and `PhysicsAnimation`.
+
+### Fixes
+
+* #365 Fix an issue with customized `TopBottomAnimation` where messages weren't properly displayed under navigation and tab bars.
+* #352 Fix accessibility for view controllers presented with `SwiftMessagesSegue`.
+* #355 Update card view layout to support centering of pure textual content 
+* #354 Support `overrideUserInterfaceStyle` when view presented in its own window
+* #360 Fix touch handing issue in iOS 13.1.3
+* #382 Fix warnings in Xcode 11.4
+
+## 7.0.1
+
+### Changes
+
+* Support iOS 13.
+
+### Features
+* #335 Add option to hide status bar when view is displayed in a window. As of iOS 13, windows can no longer cover the status bar. The only alternative is to set `Config.prefersStatusBarHidden = true` to hide it.
+
+## 7.0.0
+
+### Changes
+
+* Swift 5
+* Remove deprecated APIs
+
+### Features
+
+* #313 Improved sizing on iPad
+  
+>`SwiftMessagesSegue` provides default view controller sizing based on device, with width on iPad being limited to 500pt max. However, it is recommended that you explicitly specify size appropriate for your content using one of the following methods.
+>  1. Define sufficient width and height constraints in your view controller such that it sizes itself.
+>  1. Set the `preferredContentSize` property (a.k.a "Use Preferred Explicit Size" in Interface Builder's attribute inspector). Zeros are ignored, e.g. `CGSize(width: 0, height: 350)` only affects the height.
+>  1. Add explicit width and/or height constraints to `segue.messageView.backgroundView`.  
+>
+>Note that `Layout.topMessage` and `Layout.bottomMessage` are always full screen width. For other layouts, the there is a maximum 500pt width on for regular horizontal size class (iPad) at 950 priority. This limit can be overridden by adding higher-priority constraints.
+
+* #275 Add ability to avoid the keyboard.
+
+>The `KeyboardTrackingView` class can be used to cause the message view to avoid the keyboard by sliding up when the keyboard gets too close.
+>
+>````swift
+>// Message view
+>var config = SwiftMessages.defaultConfig
+>config.keyboardTrackingView = KeyboardTrackingView()
+>
+>// Or view controller
+>segue.keyboardTrackingView = KeyboardTrackingView()
+>````
+>You can incorporate `KeyboardTrackingView` into your app even when you're not using SwiftMessages. Install into your view hierarchy by pinning `KeyboardTrackingView` to the bottom, leading, and trailing edges of the screen. Then pin the bottom of your content that should avoid the keyboard to the top `KeyboardTrackingView`. Use an equality constraint to strictly track the keyboard or an inequality constraint to only move when the keyboard gets too close. `KeyboardTrackingView` works by observing keyboard notifications and adjusting its height to maintain its top edge above the keyboard, thereby pushing your content up. See the comments in `KeyboardTrackingView` for configuration options.
+
 
 * #276 Add ability to hide message without animation
 * #272 Add duration for `SwiftMessagesSegue`
