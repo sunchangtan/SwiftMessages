@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		220655121FAF82B600F4E00F /* MarginAdjustable+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220655111FAF82B600F4E00F /* MarginAdjustable+Animation.swift */; };
 		224FB69921153B440081D4DE /* CALayer+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224FB69821153B440081D4DE /* CALayer+Utils.swift */; };
-		224FB69B211636D30081D4DE /* ViewControllerContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224FB69A211636D30081D4DE /* ViewControllerContainerView.swift */; };
+		225304622290C76E00A03ACF /* NSLayoutConstraint+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225304612290C76E00A03ACF /* NSLayoutConstraint+Utils.swift */; };
+		225304662293000C00A03ACF /* KeyboardTrackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225304652293000C00A03ACF /* KeyboardTrackingView.swift */; };
 		2270044B1FAFA6DD0045DDC3 /* PhysicsAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270044A1FAFA6DD0045DDC3 /* PhysicsAnimation.swift */; };
 		22774BA020B5EF2A00813732 /* UIEdgeInsets+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22774B9F20B5EF2A00813732 /* UIEdgeInsets+Utils.swift */; };
 		227BA6D920BF224A00E5A843 /* SwiftMessagesSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227BA6D820BF224A00E5A843 /* SwiftMessagesSegue.swift */; };
@@ -76,7 +77,6 @@
 		86BBA9061D5E040C00FE8F16 /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864495551D4F7C390056EB2A /* Identifiable.swift */; };
 		86BBA9071D5E040C00FE8F16 /* MarginAdjustable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AAF81D1D5549680031EE32 /* MarginAdjustable.swift */; };
 		86BBA9081D5E040C00FE8F16 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AAF82A1D580DD70031EE32 /* Error.swift */; };
-		86DBE0041D75BE800071E51D /* Array+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86DBE0031D75BE800071E51D /* Array+Utils.swift */; };
 		E6E49F911D70A344006CB883 /* MessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 862C0CDA1D5A397F00D06168 /* MessageView.xib */; };
 		E6E49F921D70A349006CB883 /* StatusLine.xib in Resources */ = {isa = PBXBuildFile; fileRef = 862C0CDB1D5A397F00D06168 /* StatusLine.xib */; };
 /* End PBXBuildFile section */
@@ -94,7 +94,8 @@
 /* Begin PBXFileReference section */
 		220655111FAF82B600F4E00F /* MarginAdjustable+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MarginAdjustable+Animation.swift"; sourceTree = "<group>"; };
 		224FB69821153B440081D4DE /* CALayer+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Utils.swift"; sourceTree = "<group>"; };
-		224FB69A211636D30081D4DE /* ViewControllerContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerContainerView.swift; sourceTree = "<group>"; };
+		225304612290C76E00A03ACF /* NSLayoutConstraint+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Utils.swift"; sourceTree = "<group>"; };
+		225304652293000C00A03ACF /* KeyboardTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTrackingView.swift; sourceTree = "<group>"; };
 		2270044A1FAFA6DD0045DDC3 /* PhysicsAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsAnimation.swift; sourceTree = "<group>"; };
 		22774B9F20B5EF2A00813732 /* UIEdgeInsets+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Utils.swift"; sourceTree = "<group>"; };
 		227BA6D820BF224A00E5A843 /* SwiftMessagesSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftMessagesSegue.swift; sourceTree = "<group>"; };
@@ -137,6 +138,7 @@
 		2298C2041EE47DC900E2DDC1 /* Weak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
 		2298C2061EE480D000E2DDC1 /* Animator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 		2298C2081EE486E300E2DDC1 /* TopBottomAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopBottomAnimation.swift; sourceTree = "<group>"; };
+		22A2EA6E24EC6CFA00BB2540 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		22DFC9151EFF30F6001B1CA1 /* CenteredView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CenteredView.xib; path = Resources/CenteredView.xib; sourceTree = "<group>"; };
 		22DFC9171F00674E001B1CA1 /* PhysicsPanHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsPanHandler.swift; sourceTree = "<group>"; };
 		22E01F631E74EC8B00ACE19A /* MaskingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaskingView.swift; sourceTree = "<group>"; };
@@ -167,7 +169,6 @@
 		86B48AFA1D5A41C900063E2B /* SwiftMessagesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftMessagesTests.swift; sourceTree = "<group>"; };
 		86B48AFC1D5A41C900063E2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86BBA8F81D5E01FC00FE8F16 /* CardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CardView.xib; path = Resources/CardView.xib; sourceTree = "<group>"; };
-		86DBE0031D75BE800071E51D /* Array+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Utils.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,7 +212,6 @@
 			isa = PBXGroup;
 			children = (
 				227BA6D820BF224A00E5A843 /* SwiftMessagesSegue.swift */,
-				224FB69A211636D30081D4DE /* ViewControllerContainerView.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -277,9 +277,9 @@
 				86AAF82A1D580DD70031EE32 /* Error.swift */,
 				2298C2061EE480D000E2DDC1 /* Animator.swift */,
 				2298C2041EE47DC900E2DDC1 /* Weak.swift */,
-				86DBE0031D75BE800071E51D /* Array+Utils.swift */,
 				22774B9F20B5EF2A00813732 /* UIEdgeInsets+Utils.swift */,
 				22F27950210CE25900273E7F /* CornerRoundingView.swift */,
+				225304652293000C00A03ACF /* KeyboardTrackingView.swift */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -290,8 +290,9 @@
 				86B48AED1D5A41C900063E2B /* SwiftMessages */,
 				86B48AF91D5A41C900063E2B /* SwiftMessagesTests */,
 				867E21501D4D01D500594A41 /* Products */,
-				862C0C6A1D58E93300D06168 /* SwiftMessages.podspec */,
 				224FB6C8211651D10081D4DE /* Frameworks */,
+				22A2EA6E24EC6CFA00BB2540 /* Package.swift */,
+				862C0C6A1D58E93300D06168 /* SwiftMessages.podspec */,
 			);
 			sourceTree = "<group>";
 		};
@@ -314,6 +315,7 @@
 				86AAF81B1D551FE60031EE32 /* UIViewController+Utils.swift */,
 				224FB69821153B440081D4DE /* CALayer+Utils.swift */,
 				862C0CB01D5911C100D06168 /* NSBundle+Utils.swift */,
+				225304612290C76E00A03ACF /* NSLayoutConstraint+Utils.swift */,
 			);
 			name = Internal;
 			sourceTree = "<group>";
@@ -408,7 +410,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1210;
 				ORGANIZATIONNAME = "SwiftKick Mobile";
 				TargetAttributes = {
 					86B48AEB1D5A41C900063E2B = {
@@ -504,6 +506,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				225304662293000C00A03ACF /* KeyboardTrackingView.swift in Sources */,
 				22774BA020B5EF2A00813732 /* UIEdgeInsets+Utils.swift in Sources */,
 				86BBA8FC1D5E03F100FE8F16 /* MessageView.swift in Sources */,
 				86BBA9061D5E040C00FE8F16 /* Identifiable.swift in Sources */,
@@ -516,7 +519,6 @@
 				2298C2051EE47DC900E2DDC1 /* Weak.swift in Sources */,
 				86BBA9001D5E040600FE8F16 /* PassthroughView.swift in Sources */,
 				22DFC9181F00674E001B1CA1 /* PhysicsPanHandler.swift in Sources */,
-				224FB69B211636D30081D4DE /* ViewControllerContainerView.swift in Sources */,
 				227BA6D920BF224A00E5A843 /* SwiftMessagesSegue.swift in Sources */,
 				220655121FAF82B600F4E00F /* MarginAdjustable+Animation.swift in Sources */,
 				22E307FF1E74C5B100E35893 /* AccessibleMessage.swift in Sources */,
@@ -529,9 +531,9 @@
 				86BBA9081D5E040C00FE8F16 /* Error.swift in Sources */,
 				2298C2091EE486E300E2DDC1 /* TopBottomAnimation.swift in Sources */,
 				86589D471D64B6E40041676C /* BaseView.swift in Sources */,
+				225304622290C76E00A03ACF /* NSLayoutConstraint+Utils.swift in Sources */,
 				86BBA9071D5E040C00FE8F16 /* MarginAdjustable.swift in Sources */,
 				867BED211D622793005212E3 /* BackgroundViewable.swift in Sources */,
-				86DBE0041D75BE800071E51D /* Array+Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,6 +560,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -577,6 +580,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -601,7 +605,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -614,6 +618,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -633,6 +638,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -651,7 +657,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -681,6 +687,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -711,6 +718,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -727,7 +735,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = it.swiftkick.SwiftMessagesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -739,7 +747,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = it.swiftkick.SwiftMessagesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
